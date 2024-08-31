@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loans - Personal Finance Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light background color */
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50; /* Header background color */
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .payment-card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .payment-card p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .payment-card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .payment-card a:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: #fff;
+            margin-top: 30px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Personal Finance Management</h1>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Loans - Payment Methods</h2>
+        <div class="payment-methods">
+            <div class="payment-card">
+                <h3>Payment for House Bills</h3>
+                <p>Pay your utility bills with ease and manage your home expenses.</p>
+                <a href="/pay-house-bills">Pay Now</a>
+            </div>
+            <div class="payment-card">
+                <h3>Paying Taxes</h3>
+                <p>Efficiently handle your tax payments and stay compliant.</p>
+                <a href="/taxes">Pay Now</a>
+            </div>
+            <div class="payment-card">
+                <h3>Car Loan Payments</h3>
+                <p>Manage your car loan payments and keep track of your auto expenses.</p>
+                <a href="/carLoan">Pay Now</a>
+            </div>
+            <div class="payment-card">
+                <h3>Education Loans</h3>
+                <p>Pay for your education loans and keep up with your studies.</p>
+                <a href="/educationLoan">Pay Now</a>
+            </div>
+            <div class="payment-card">
+                <h3>Medical Bills</h3>
+                <p>Handle your medical expenses and stay on top of your health finances.</p>
+                <a href="/medicalLoan">Pay Now</a>
+            </div>
+            <div class="payment-card">
+                <h3>Personal Loans</h3>
+                <p>Manage your personal loan payments and control your financial commitments.</p>
+                <a href="/personalLoan">Pay Now</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Personal Finance Management</p>
+    </footer>
+</body>
+
+</html>
