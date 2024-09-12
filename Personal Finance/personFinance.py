@@ -145,6 +145,53 @@ def handling_transactions(sender_id, receiver_id, money):
     
 
 
+def process_payment(user, input_money, bill_type):
+    try:
+        input_money = int(input_money)
+        if input_money <= 0:
+            return "Amount must be greater than zero", None
+    except ValueError:
+        return "Invalid amount", None
+
+    if user.total_balance < input_money:
+        return "Insufficient funds", None
+
+    if bill_type == 'houseBills':
+        user.houseBills -= input_money
+        if user.houseBills <= 0:
+            user.houseBills = 0
+            return "You paid your house bills", True
+    elif bill_type == 'taxes':
+        user.taxes -= input_money
+        if user.taxes <= 0:
+            user.taxes = 0
+            return "You paid your taxes", True
+    elif bill_type == 'carLoan':
+        user.car_loan -= input_money
+        if user.car_loan <= 0:
+            user.car_loan = 0
+            return "You paid your car loan", True
+    elif bill_type == 'educationLoan':
+        user.education_loan -= input_money
+        if user.education_loan <= 0:
+            user.education_loan = 0
+            return "You paid your education loan", True
+    elif bill_type == 'personalLoan':
+        user.personal_loan -= input_money
+        if user.personal_loan <= 0:
+            user.personal_loan = 0
+            return "You paid your personal loan", True
+    elif bill_type == 'medicalLoan':
+        user.medical_loan -= input_money
+        if user.medical_loan <= 0:
+            user.medical_loan = 0
+            return "You paid your medical loan", True
+
+    user.total_balance -= input_money
+
+    return "Payment successful", False
+
+
 
 @app.route('/pay-house-bills', methods=['GET', 'POST'])
 @login_required
@@ -157,31 +204,21 @@ def houseBills():
         if not user:
             return render_template('pay-house-bills.html', error="User not found")
 
-        try:
-            input_money = int(input_money)
-            if input_money <= 0:
-                return render_template('pay-house-bills.html', error="Amount must be greater than zero")
-        except ValueError:
-            return render_template('pay-house-bills.html', error="Invalid amount")
+        message, complete = process_payment(user, input_money, 'houseBills')
+        if complete is None:
+            return render_template('pay-house-bills.html', error=message)
 
-        if user.total_balance < input_money:
-            return render_template('pay-house-bills.html', error="Insufficient funds")
-
-        user.total_balance -= input_money
-        user.houseBills -= input_money 
-        if user.houseBills <= 0:
-            user.houseBills = 0
-            return render_template('pay-house-bills.html', success = "You payed your bill")  # <----- test this feature
         try:
             db.session.commit()
-            return render_template('pay-house-bills.html', success="House bill payment successful")
+            return render_template('pay-house-bills.html', success=message)
         except Exception as e:
             db.session.rollback()
             return render_template('pay-house-bills.html', error="Transaction failed: " + str(e))
     
     return render_template('pay-house-bills.html')
 
-@app.route('/taxes', methods = ['GET', 'POST'])
+
+@app.route('/taxes', methods=['GET', 'POST'])
 @login_required
 def taxes():
     if request.method == 'POST':
@@ -192,24 +229,13 @@ def taxes():
         if not user:
             return render_template('taxes.html', error="User not found")
 
-        try:
-            input_money = int(input_money)
-            if input_money <= 0:
-                return render_template('taxes.html', error="Amount must be greater than zero")
-        except ValueError:
-            return render_template('taxes.html', error="Invalid amount")
+        message, complete = process_payment(user, input_money, 'taxes')
+        if complete is None:
+            return render_template('taxes.html', error=message)
 
-        if user.total_balance < input_money:
-            return render_template('taxes.html', error="Insufficient funds")
-
-        user.total_balance -= input_money
-        user.taxes -= input_money 
-        if user.taxes <= 0:
-            user.taxes = 0
-            return render_template('taxes.html', success = "You payed your bill")  # <----- test this feature
         try:
             db.session.commit()
-            return render_template('taxes.html', success="Taxes  payment successful")
+            return render_template('taxes.html', success=message)
         except Exception as e:
             db.session.rollback()
             return render_template('taxes.html', error="Transaction failed: " + str(e))
@@ -217,7 +243,7 @@ def taxes():
     return render_template('taxes.html')
 
 
-@app.route('/carLoan', methods = ['GET', 'POST'])
+@app.route('/carLoan', methods=['GET', 'POST'])
 @login_required
 def carLoan():
     if request.method == 'POST':
@@ -228,31 +254,21 @@ def carLoan():
         if not user:
             return render_template('carLoan.html', error="User not found")
 
-        try:
-            input_money = int(input_money)
-            if input_money <= 0:
-                return render_template('carLoan.html', error="Amount must be greater than zero")
-        except ValueError:
-            return render_template('carLoan.html', error="Invalid amount")
+        message, complete = process_payment(user, input_money, 'carLoan')
+        if complete is None:
+            return render_template('carLoan.html', error=message)
 
-        if user.total_balance < input_money:
-            return render_template('carLoan.html', error="Insufficient funds")
-
-        user.total_balance -= input_money
-        user.car_loan -= input_money 
-        if user.car_loan <= 0:
-            user.car_loan = 0
-            return render_template('carLoan.html', success = "You payed your bill")  # <----- test this feature
         try:
             db.session.commit()
-            return render_template('carLoan.html', success="Car Loan payment successful")
+            return render_template('carLoan.html', success=message)
         except Exception as e:
             db.session.rollback()
             return render_template('carLoan.html', error="Transaction failed: " + str(e))
     
     return render_template('carLoan.html')
 
-@app.route('/educationLoan', methods = ['GET', 'POST'])
+
+@app.route('/educationLoan', methods=['GET', 'POST'])
 @login_required
 def educationLoan():
     if request.method == 'POST':
@@ -263,31 +279,21 @@ def educationLoan():
         if not user:
             return render_template('educationLoan.html', error="User not found")
 
-        try:
-            input_money = int(input_money)
-            if input_money <= 0:
-                return render_template('educationLoan.html', error="Amount must be greater than zero")
-        except ValueError:
-            return render_template('educationLoan.html', error="Invalid amount")
+        message, complete = process_payment(user, input_money, 'educationLoan')
+        if complete is None:
+            return render_template('educationLoan.html', error=message)
 
-        if user.total_balance < input_money:
-            return render_template('educationLoan.html', error="Insufficient funds")
-
-        user.total_balance -= input_money
-        user.education_loan -= input_money 
-        if user.education_loan <= 0:
-            user.education_loan = 0
-            return render_template('educationLoan.html', success = "You payed your bill")  # <----- test this feature
         try:
             db.session.commit()
-            return render_template('educationLoan.html', success="Education Loan payment successful")
+            return render_template('educationLoan.html', success=message)
         except Exception as e:
             db.session.rollback()
             return render_template('educationLoan.html', error="Transaction failed: " + str(e))
     
     return render_template('educationLoan.html')
 
-@app.route('/personalLoan', methods = ['GET', 'POST'])
+
+@app.route('/personalLoan', methods=['GET', 'POST'])
 @login_required
 def personalLoan():
     if request.method == 'POST':
@@ -298,31 +304,21 @@ def personalLoan():
         if not user:
             return render_template('personalLoan.html', error="User not found")
 
-        try:
-            input_money = int(input_money)
-            if input_money <= 0:
-                return render_template('personalLoan.html', error="Amount must be greater than zero")
-        except ValueError:
-            return render_template('personalLoan.html', error="Invalid amount")
+        message, complete = process_payment(user, input_money, 'personalLoan')
+        if complete is None:
+            return render_template('personalLoan.html', error=message)
 
-        if user.total_balance < input_money:
-            return render_template('personalLoan.html', error="Insufficient funds")
-
-        user.total_balance -= input_money
-        user.personal_loan -= input_money 
-        if user.personal_loan <= 0:
-            user.personal_loan = 0
-            return render_template('personalLoan.html', success = "You payed your bill")  # <----- test this feature
         try:
             db.session.commit()
-            return render_template('personalLoan.html', success="Personal Loan payment successful")
+            return render_template('personalLoan.html', success=message)
         except Exception as e:
             db.session.rollback()
             return render_template('personalLoan.html', error="Transaction failed: " + str(e))
     
     return render_template('personalLoan.html')
 
-@app.route('/medicalLoan', methods = ['GET', 'POST'])
+
+@app.route('/medicalLoan', methods=['GET', 'POST'])
 @login_required
 def medicalLoan():
     if request.method == 'POST':
@@ -333,29 +329,19 @@ def medicalLoan():
         if not user:
             return render_template('medicalLoan.html', error="User not found")
 
-        try:
-            input_money = int(input_money)
-            if input_money <= 0:
-                return render_template('medicalLoan.html', error="Amount must be greater than zero")
-        except ValueError:
-            return render_template('medicalLoan.html', error="Invalid amount")
+        message, complete = process_payment(user, input_money, 'medicalLoan')
+        if complete is None:
+            return render_template('medicalLoan.html', error=message)
 
-        if user.total_balance < input_money:
-            return render_template('medicalLoan.html', error="Insufficient funds")
-
-        user.total_balance -= input_money
-        user.medical_loan -= input_money 
-        if user.medical_loan <= 0:
-            user.medical_loan = 0
-            return render_template('medicalLoan.html', success = "You payed your bill")  # <----- test this feature
         try:
             db.session.commit()
-            return render_template('medicalLoan.html', success="House bill payment successful")
+            return render_template('medicalLoan.html', success=message)
         except Exception as e:
             db.session.rollback()
             return render_template('medicalLoan.html', error="Transaction failed: " + str(e))
     
     return render_template('medicalLoan.html')
+
 
 @app.route('/loans', methods=['GET', 'POST'])
 @login_required
@@ -372,8 +358,13 @@ def logout():
 @login_required
 def payments():
     user_id = session['user_id']
+    user = User.query.get(user_id)
     transactions = Transactions.query.filter_by(sender_id=user_id).all()
-    return render_template('payments.html', transactions=transactions)
+    user_medical, user_taxes, user_personal, user_car, user_education = user.medical_loan, user.houseBills, user.personal_loan, user.car_loan, user.education_loan
+    loans = [user_medical, user_taxes, user_personal, user_car, user_education]
+    return render_template('payments.html', transactions=transactions, loans = loans)
+
+
 
 
 if __name__ == '__main__':
